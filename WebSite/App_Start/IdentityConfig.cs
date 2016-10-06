@@ -1,4 +1,6 @@
 ﻿using Identity;
+using Identity.Entities;
+using Identity.Stores;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -38,17 +40,16 @@ namespace WebSite
         public AppUserManager(IUserStore<AppMember,int> store)
             : base(store)
         {
+           
         }
 
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
-            //var manager = new ApplicationUserManager(
-            //new UserStore<AppMember>(
-            //context.Get<ApplicationDbContext>()));
-            var container = UnityConfig.GetConfiguredContainer();
-            var userStore = container.Resolve<UserStore>();
-            var manager = new AppUserManager(userStore);
 
+            var container = UnityConfig.GetConfiguredContainer();
+            var userStore = container.Resolve<UserStore<int, AppMember, IdentityUserRole<int>, IdentityRoleClaim<int>>>();
+            var manager = new AppUserManager(userStore);
+            
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<AppMember, int>(manager)
             {
@@ -91,6 +92,21 @@ namespace WebSite
                     new DataProtectorTokenProvider<AppMember, int>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
+        }
+    }
+
+    public class AppRoleManager : RoleManager<IdentityRole,int>
+    {
+        public AppRoleManager(IRoleStore<IdentityRole, int> roleStore)
+            : base(roleStore)
+        {
+        }
+
+        public static AppRoleManager Create(IdentityFactoryOptions<AppRoleManager> options, IOwinContext context)
+        {
+            var container = UnityConfig.GetConfiguredContainer();
+            var roleStore = container.Resolve<RoleStore<int, IdentityRole, IdentityUserRole<int>, IdentityRoleClaim<int>>>();
+            return new AppRoleManager(roleStore);
         }
     }
 

@@ -29,7 +29,7 @@ namespace Data.Repositories
 
         public void Update(Product product)
         {
-            _context.Execute("update products set name=@Name,price=@Price", product);
+            _context.Execute("update products set name=@Name,price=@Price where id=@Id", product);
         }
 
         public Product GetById(int id)

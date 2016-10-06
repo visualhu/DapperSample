@@ -3,13 +3,14 @@ using Data.Contexts;
 using Data.Repositories;
 using Data.Entities;
 using Data.Service;
-using Identity;
+using Identity.Stores;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using System;
 using WebSite.Models;
 using Identity.Entities;
 using Identity.Repositories;
+using Microsoft.AspNet.Identity;
 
 namespace WebSite
 {
@@ -59,7 +60,8 @@ namespace WebSite
             container.RegisterType<IRoleRepository<int, IdentityRole, IdentityUserRole<int>, IdentityRoleClaim<int>>, RoleRepository<int, IdentityRole, IdentityUserRole<int>, IdentityRoleClaim<int>>> ();
             container.RegisterType<AppUserManager>(new PerRequestLifetimeManager());
             container.RegisterType<AppSignInManager>(new PerRequestLifetimeManager());
-            container.RegisterType<Identity.Stores.UserStore<int, IdentityUser, IdentityUserRole<int>,IdentityRoleClaim<int>>(new PerRequestLifetimeManager());
+            container.RegisterType<UserStore<int, AppMember, IdentityUserRole<int>, IdentityRoleClaim<int>>>(new PerRequestLifetimeManager());
+            container.RegisterType<RoleStore<int, IdentityRole, IdentityUserRole<int>, IdentityRoleClaim<int>>>(new PerRequestLifetimeManager());
         }
     }
 }

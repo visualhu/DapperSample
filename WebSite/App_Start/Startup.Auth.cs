@@ -19,6 +19,7 @@ namespace WebSite
 
             //app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
+            app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
             app.CreatePerOwinContext<AppSignInManager>(AppSignInManager.Create);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions

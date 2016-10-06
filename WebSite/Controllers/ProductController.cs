@@ -1,5 +1,5 @@
 ﻿using Data.Application;
-using Data.Domain;
+using Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
